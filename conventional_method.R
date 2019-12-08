@@ -23,7 +23,7 @@ sim1 = crmsim( PI = c(5,10,15,19)/100, #true probabilities (can change this)
                target = 0.2, #target DLT rate, standard is 1/3
                n = 35, #trial sample size
                x0 = 1, #initial dose
-               nsim = 100,
+               nsim = 1000,
                mcohort = 5, #number per cohort
                restrict = TRUE, #purely model based is FALSE option, this is no skipping and no esc after toxic
                count = FALSE,

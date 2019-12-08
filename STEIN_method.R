@@ -1,5 +1,6 @@
 #STEIN design, reminescent of MPTI
 #adapted from Lin, Yin 2017
+#Author: Allen Li
 
 # pj tox probability @ level j -> estimated via xj/nj
 # qj efficacy probability @ level j -> estimated via yj/nj
@@ -34,7 +35,8 @@ STEIN_sim <- function(nsims, npatients, tox_levels, eff_levels,
                 psi_1 = 0.3, psi_2 = 0.8,
                 ncohort = 1, w_tox = 1, w_eff = 1 ) {
 #loop over simulations
-cohorts <- npatients%/%ncohort+1
+if (npatients%%ncohort == 0) {cohorts = npatients/ncohort} 
+else{ cohorts <- npatients%/%ncohort+1 }
 ndose <- length(tox_levels)
 OBD <- rep(0,ndose)
 sim_tox <- matrix(0,nsims,ncol = ndose)
@@ -63,11 +65,9 @@ j <- 1 #current dose level
 for (i in 1:cohorts) {
   #simulate cohort on dose level
   np <- min(npatients-ncohort*(i-1),ncohort)
-  if (np > 0) {
   ntox[j] <- sim_dose(j,ntox,tox_levels,np)
   neff[j] <- sim_dose(j,neff,eff_levels,np)
   n_lvl[j] <- n_lvl[j] + np
-  }
   #calculate p_estj and q_estj
   p_estj <- ntox[j]/n_lvl[j]
   q_estj <- neff[j]/n_lvl[j]
@@ -182,19 +182,20 @@ indicator <- function(tox,phi) {
 }
 
 #actual simulation
-#35 people recruited, cohort size 3
-#target tox 1/3
-
+#35 people recruited, cohort size 5
+#Target Tox Level: 0.2
 
 prior_tox <- c(5,10,15,19)/100 #given
 prior_eff_mono <- c(20,30,40,50)/100
 prior_eff_level <- c(10,30,40,42)/100
 prior_eff_quad <- c(12,37,50,30)/100
 
+dose_labels <- c(1,2,3,4)
 
-set_mono <- STEIN_sim(nsims = 100, npatients = 35, 
+set_mono <- STEIN_sim(nsims = 1000, npatients = 35, 
                       tox_levels = prior_tox, eff_levels = prior_eff_mono, 
                       phi_0 = 0.2,
                       psi_1 = 0.3, psi_2 = 0.8,
-                      ncohort = 3, w_tox = 1, w_eff = 1 )
+                      ncohort = 5, w_tox = 1, w_eff = 1 )
+colnames(set_mono) <- dose_labels
 set_mono
