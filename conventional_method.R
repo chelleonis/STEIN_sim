@@ -20,7 +20,7 @@ dlt = 0.2 #target
 #Phase I
 sim1 = crmsim( PI = c(5,10,15,19)/100, #true probabilities (can change this)
                prior = c(5,10,15,19)/100, #skeleton 
-               target = 1/3, #target DLT rate, standard is 1/3
+               target = 0.2, #target DLT rate, standard is 1/3
                n = 35, #trial sample size
                x0 = 1, #initial dose
                nsim = 100,
