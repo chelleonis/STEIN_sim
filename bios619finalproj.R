@@ -35,8 +35,8 @@ STEIN_sim <- function(nsims = 100, npatients, dose_levels,
                 ncohort = 1) {
 #loop over simulations
 ndose <- length(dose_levels)
-
-  
+OBD <- rep(0,ndose)
+  for(r in 1:nsims) {
 #variable setup
 phi_L = log( (1-phi_1) / (1-phi_0) ) / log( (phi_0*(1-phi_1))/ (phi_1*(1-phi_0)) ) 
 phi_U = log( (1-phi_0) / (1-phi_2) ) / log( (phi_2*(1-phi_0))/ (phi_0*(1-phi_2)) ) 
@@ -81,6 +81,7 @@ for (i in 1:npatients%/%ncohort+1) {
     }
     #dunno how to do Pr(q_estj' > psi_opt | yj') yet
     
+    j <- j
   }
   #early stopping Pr(pj > phi0 | xj) > 0.95) [unif(0,1) prior for each pj)]
   #futility: Pr (qj < psi1 | yj ) > 0.98, dose level j eliminated for futility
@@ -89,15 +90,15 @@ for (i in 1:npatients%/%ncohort+1) {
   
 }
 #step 3: repeat step 2 until max sample size
-
 #utility function at the end to calculate optimal dose
 #in remark 3, U(pj,qj) = qj - w1pj - w2 pjI(pj > phi_0)
-
-
+OBD[k] <- OBD_select(ndose,nlvl,ntox,neff) 
+  }
 #returns a matrix of selected doses, ntox, and idk what else
+return(OBD)
 }
 
-#helper function to sim at the dose level maybe....
+#helper function to sim at the dose level
 sim_dose <- function(j,nevent,est_curv,people) {
   #MOVE TO FUNCTION, eff probs have separate fxn
   cohort <- rbinom(np,1,tox_levels[j])
@@ -105,10 +106,24 @@ sim_dose <- function(j,nevent,est_curv,people) {
   return(nevent)
 }
 
+OBD_select <- function(j,nlvl,ntox,neff) {
+  utility <- rep(0,j)
+  for (i in 1:j) {
+    
+  }
+  which.max(utility)
+}
+
 
 
 #actual simulation
 #35 people recruited, cohort size 3
-#dose levels: above
 #target tox 1/3
+
+
+prior_tox <- c(5,10,15,19)/100
+prior_eff_mono <- c(10,20,30,40)/100
+prior_eff_level <- c(10,20,22,25)/100
+prior_eff_quad <- c(12,24,20,15)/100
+
 
