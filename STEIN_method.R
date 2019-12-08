@@ -192,10 +192,26 @@ prior_eff_quad <- c(12,37,50,30)/100
 
 dose_labels <- c(1,2,3,4)
 
-set_mono <- STEIN_sim(nsims = 1000, npatients = 35, 
+set_mono <- STEIN_sim(nsims = 1000, npatients = 57, 
                       tox_levels = prior_tox, eff_levels = prior_eff_mono, 
                       phi_0 = 0.2,
                       psi_1 = 0.3, psi_2 = 0.8,
                       ncohort = 5, w_tox = 1, w_eff = 1 )
 colnames(set_mono) <- dose_labels
 set_mono
+
+set_level1 <- STEIN_sim(nsims = 1000, npatients = 57, 
+                      tox_levels = prior_tox, eff_levels = prior_eff_level, 
+                      phi_0 = 0.2,
+                      psi_1 = 0.3, psi_2 = 0.8,
+                      ncohort = 5, w_tox = 1, w_eff = 1 )
+colnames(set_level1) <- dose_labels
+set_level1
+
+set_quad <- STEIN_sim(nsims = 1000, npatients = 57, 
+                      tox_levels = prior_tox, eff_levels = prior_eff_quad, 
+                      phi_0 = 0.2,
+                      psi_1 = 0.3, psi_2 = 0.8,
+                      ncohort = 5, w_tox = 1, w_eff = 1 )
+colnames(set_quad) <- dose_labels
+set_quad
