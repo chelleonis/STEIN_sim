@@ -1,51 +1,3 @@
-#bios 619 final project multiple myeloma smulation
-#library(bcrm)
-library(dfcrm)
-library(clinfun)
-
-set.seed(619)
-#phase i (toxicity)
-# CRM non-TITE 28 day tox period(?) so it is ok
-# need: Probability of selecting each dose as the MTD
-#Number/proportion of patients given each dose
-#Number of DLTs per dose
-#Expected sample size
-#Expected study duration
-
-#beta prior i guess for now
-#1 param logistic  
-doses = c(5,10,15,19)/100
-pi_nmax = 35 #max enrollment for phase I (max 4-6 subjects/month)
-dlt = 0.2 #target
-prior_tox = c(0,0,0,0) 
-
-#Phase I
-sim1 = crmsim( PI = c(5,10,15,19)/100, #true probabilities
-  prior = c(5,10,15,19)/100, #initial guesses 
-  target = 1/3, #target DLT rate, standard is 1/3
-  n = 35, #trial sample size
-  x0 = 1, #initial dose
-  nsim = 100,
-  mcohort = 5, #number per cohort
-  restrict = TRUE, #purely model based is FALSE option, this is no skipping and no esc after toxic
-  count = FALSE,
-  method = "bayes",
-  model = "logistic",
-  scale = sqrt(1.34), # default
-  seed = 619
-)
-
-#results selected dose level 4, 19%
-
-#if time, run competing (aka 3+3 or biased coin)
-
-#goal is to treat 36 people at the MTD
-#phase ii simulation: (efficacy)
-#Simon two stage, optimuum (for myeloma) 
-#25% response no-go, 45% promising
-sim2 = ph2simon(pu = 0.25, pa = 0.45, ep1 = 0.05, ep2 = 0.20, nmax = 100)
-
-#now do the seamless oWo
 #STEIN design, reminescent of MPTI
 #adapted from Lin, Yin 2017
 
@@ -82,13 +34,14 @@ STEIN_sim <- function(nsims = 100, npatients, dose_levels,
                 psi_1 = 0.3, psi_2 = 0.8,
                 ncohort = 1) {
 #loop over simulations
+ndose <- length(dose_levels)
 
+  
 #variable setup
 phi_L = log( (1-phi_1) / (1-phi_0) ) / log( (phi_0*(1-phi_1))/ (phi_1*(1-phi_0)) ) 
 phi_U = log( (1-phi_0) / (1-phi_2) ) / log( (phi_2*(1-phi_0))/ (phi_0*(1-phi_2)) ) 
 psi_opt = log( (1-psi_1) / (1-psi_2) ) / log( (psi_2*(1-psi_1))/ (psi_1*(1-psi_2)) )
 #loop variable setup
-ndose <- length(dose_levels)
 ntox <- rep(0,ndose)
 neff <- rep(0,ndose)
 n_lvl <- rep(0,ndose)
@@ -134,10 +87,12 @@ for (i in 1:npatients%/%ncohort+1) {
   #if all suck (futile) then terminate early
   
   
-  #utility function at the end to calculate optimal dose
-  #in remark 3, U(pj,qj) = qj - w1pj - w2 pjI(pj > phi_0)
 }
 #step 3: repeat step 2 until max sample size
+
+#utility function at the end to calculate optimal dose
+#in remark 3, U(pj,qj) = qj - w1pj - w2 pjI(pj > phi_0)
+
 
 #returns a matrix of selected doses, ntox, and idk what else
 }
