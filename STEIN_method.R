@@ -188,7 +188,7 @@ indicator <- function(tox,phi) {
 prior_tox <- c(5,10,15,19)/100 #given
 prior_eff_mono <- c(10,20,30,40)/100
 prior_eff_level <- c(10,25,42,50)/100
-prior_eff_quad <- c(5,25,50,30)/100
+prior_eff_quad <- c(.15,0.45, 0.35,0.25)/100
 
 dose_labels <- c(1,2,3,4)
 
