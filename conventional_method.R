@@ -43,9 +43,9 @@ sim2 <- ph2simon(pu = 0.25, pa = 0.45, ep1 = 0.05, ep2 = 0.10, nmax = 100)
 #simulating stage 2 outcomes
 nsims2 <- 1000
 pi_tox <- 0.19
-pi_eff_mono <- 0.5 #from STEIN sim of prior efficacy
-pi_eff_lvl <- 0.42
-pi_eff_quad <- 0.3
+pi_eff_mono <- 0.4 #from STEIN sim of prior efficacy
+pi_eff_lvl <- 0.5
+pi_eff_quad <- 0.25
 n1 <- 22 #stage 1 ss
 n <- 57
 r1 <- 6

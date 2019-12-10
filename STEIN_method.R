@@ -188,7 +188,7 @@ indicator <- function(tox,phi) {
 prior_tox <- c(5,10,15,19)/100 #given
 prior_eff_mono <- c(10,20,30,40)/100
 prior_eff_level <- c(10,25,42,50)/100
-prior_eff_quad <- c(.15,0.45, 0.35,0.25)/100
+prior_eff_quad <- c(15,40,35,30)/100
 
 dose_labels <- c(1,2,3,4)
 
@@ -204,7 +204,7 @@ set_level1 <- STEIN_sim(nsims = 1000, npatients = 57,
                       tox_levels = prior_tox, eff_levels = prior_eff_level, 
                       phi_0 = 0.2,
                       psi_1 = 0.25, psi_2 = 0.45,
-                      ncohort = 5, w_tox = 1, w_eff = 2 )
+                      ncohort = 5, w_tox = 1, w_eff = 1 )
 colnames(set_level1) <- dose_labels
 set_level1
 
@@ -212,6 +212,6 @@ set_quad <- STEIN_sim(nsims = 1000, npatients = 57,
                       tox_levels = prior_tox, eff_levels = prior_eff_quad, 
                       phi_0 = 0.2,
                       psi_1 = 0.25, psi_2 = 0.45,
-                      ncohort = 5, w_tox = 1, w_eff = 2 )
+                      ncohort = 5, w_tox = 1, w_eff = 1 )
 colnames(set_quad) <- dose_labels
 set_quad
